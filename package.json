@@ -1,0 +1,17 @@
+{
+  "name": "gas-daily-costs",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@supabase/supabase-js": "^2.21.0",
+    "dotenv": "^16.0.3",
+    "luxon": "^3.3.0",
+    "pg": "^8.10.0"
+  }
+}
