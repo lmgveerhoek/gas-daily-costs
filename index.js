@@ -4,10 +4,10 @@ const fs = require('fs')
 const { DateTime } = require('luxon')
 import * as dotenv from "dotenv";
 
-// configure dotenv
+// Configure dotenv
 dotenv.config();
 
-// create a supabase client
+// Create a supabase client
 const supabase = createClient(
   process.env.SUPABASE_URL ?? "",
   process.env.SUPABASE_KEY ?? ""
@@ -16,7 +16,7 @@ const supabase = createClient(
 // Date is today's date
 const targetDate = new Date().toISOString().split("T")[0];
 
-// get the row that has delivery_date equal to today and hub equal to TTF from table eex-daily-prices
+// Get the row that has delivery_date equal to today and hub equal to TTF from table eex-daily-prices
 const { data: dateRow, error: dateRowError } = await supabase
   .from("eex-daily-prices")
   .select("*")
@@ -24,7 +24,7 @@ const { data: dateRow, error: dateRowError } = await supabase
   .eq("hub", "TTF")
   .limit(1);
 
-// print the data
+// Print the data
 console.log(dateRow);
 
 const supabaseUrl = process.env.DB_HOST ?? ""
@@ -32,8 +32,7 @@ const supabaseUser = process.env.DB_USER ?? ""
 const supabasePassword = process.env.DB_PASS ?? ""
 const supabaseDatabase = process.env.DB_NAME ?? ""
 
-// create a new client and use the environment variables to connect to the database
-// furthermore, use the ssl certificate called prod-ca-2021.crt to connect to the database
+// Create a PostgresSQL client
 const client = new Client({
     user: supabaseUser,
     host: supabaseUrl,
@@ -78,10 +77,13 @@ const handlingFee = 0.024793
 const transportFee = 0.01652
 const tax = 0.21
 
+// Calculate the total price
 const totalPricePerM3WithoutTax = dayAheadPrice + energyTax + handlingFee + transportFee
 const totalPricePerM3 = totalPricePerM3WithoutTax * (1 + tax)
-const totalPrice = totalUsage * totalPricePerM3
+
+// Calculate the total cost
+const totalCost = totalUsage * totalPricePerM3
 
 console.log(`Total usage: ${totalUsage} m3`)
 console.log(`Total price per m3: ${totalPricePerM3} EUR`)
-console.log(`Total price: ${totalPrice} EUR`)
+console.log(`Total cost: ${totalCost} EUR`)
